@@ -1,0 +1,20 @@
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    ports:
+      - "4566:4566"
+    security_opt:
+      - "label=disable"
+    environment:
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN}   # ← dodaj
+      - SERVICES=lambda,s3,iam,sns,logs,sts,stepfunctions
+      - AWS_DEFAULT_REGION=us-east-1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LAMBDA_RUNTIME_ENVIRONMENT_TIMEOUT=30
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:z"
+      - "localstack-data:/var/lib/localstack"
+
+volumes:
+  localstack-data:
